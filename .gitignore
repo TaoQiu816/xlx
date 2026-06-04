@@ -1,0 +1,31 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Java / Maven
+xlx-api/target/
+*.class
+*.jar
+*.war
+
+# Node
+xlx-web/node_modules/
+xlx-admin/node_modules/
+xlx-web/dist/
+xlx-admin/dist/
+
+# Env
+.env
+.env.local
+
+# Uploads (tracked by gitignore, files managed separately)
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+*.log
