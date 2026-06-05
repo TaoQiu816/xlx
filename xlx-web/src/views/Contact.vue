@@ -14,6 +14,7 @@ const form = ref({
 const file = ref<File | null>(null)
 const submitting = ref(false)
 const submitted = ref(false)
+const errorMessage = ref('')
 
 const handleFileChange = (e: Event) => {
   const input = e.target as HTMLInputElement
@@ -22,19 +23,23 @@ const handleFileChange = (e: Event) => {
 
 const submitInquiry = async () => {
   submitting.value = true
+  errorMessage.value = ''
   try {
     let fileUrl = ''
     if (file.value) {
       const uploadRes: any = await siteApi.uploadFile(file.value)
-      fileUrl = uploadRes.data?.url || ''
+      fileUrl = uploadRes.data?.fileUrl || ''
     }
     await siteApi.submitInquiry({
       ...form.value,
       fileUrl,
     })
     submitted.value = true
-  } catch { /* ignore */ }
-  finally { submitting.value = false }
+  } catch (err: any) {
+    errorMessage.value = err?.message || '提交失败，请稍后重试'
+  } finally {
+    submitting.value = false
+  }
 }
 </script>
 
@@ -114,6 +119,9 @@ const submitInquiry = async () => {
             </div>
 
             <form v-else @submit.prevent="submitInquiry" class="space-y-6">
+              <div v-if="errorMessage" class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+                {{ errorMessage }}
+              </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label class="block text-sm font-medium text-steel-700 mb-2">姓名 *</label>

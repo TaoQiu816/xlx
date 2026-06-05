@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 站点配置模块：网站全局配置管理 -->
+    <parent>
+        <groupId>com.xlx</groupId>
+        <artifactId>xlx-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>xlx-config</artifactId>
+    <name>xlx-config</name>
+    <description>站点配置模块 — 网站名称、联系方式、SEO 等全局配置</description>
+
+    <!--
+    模块说明：xlx-config（站点配置模块）
+    ============================================================
+    职责：网站全局配置项的管理（键值对形式）
+    包名：com.xlx.api.config
+    依赖：xlx-common
+
+    包含文件（4 个）：
+      entity/SiteConfig.java        — 站点配置实体（site_config 表，键值对结构）
+      mapper/SiteConfigMapper.java  — 站点配置 Mapper
+      service/SiteConfigService.java — 配置服务（getConfigMap 返回 Map、批量更新）
+      controller/SiteConfigController.java — 配置管理接口
+
+    配置项示例：
+      site_name     — 网站名称
+      company_name  — 公司名称
+      phone/email   — 联系方式
+      seo_title     — SEO 标题
+      banner_title  — 首页 Banner 标题
+
+    API 路径：/api/admin/site-config/**
+    ============================================================
+    -->
+
+    <dependencies>
+        <dependency>
+            <groupId>com.xlx</groupId>
+            <artifactId>xlx-common</artifactId>
+        </dependency>
+    </dependencies>
+</project>

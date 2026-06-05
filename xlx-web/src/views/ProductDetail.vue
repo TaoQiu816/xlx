@@ -16,6 +16,7 @@ const inquiryForm = ref({
 })
 const submitting = ref(false)
 const submitted = ref(false)
+const errorMessage = ref('')
 
 const images = computed(() => {
   const list: string[] = []
@@ -32,6 +33,7 @@ const setActiveImage = (url: string) => { activeImage.value = url }
 
 const submitInquiry = async () => {
   submitting.value = true
+  errorMessage.value = ''
   try {
     await siteApi.submitInquiry({
       ...inquiryForm.value,
@@ -39,8 +41,11 @@ const submitInquiry = async () => {
       productName: product.value.name,
     })
     submitted.value = true
-  } catch { /* ignore */ }
-  finally { submitting.value = false }
+  } catch (err: any) {
+    errorMessage.value = err?.message || '提交失败，请稍后重试'
+  } finally {
+    submitting.value = false
+  }
 }
 
 onMounted(async () => {
@@ -48,8 +53,11 @@ onMounted(async () => {
     const res: any = await siteApi.productDetail(route.params.slug as string)
     product.value = res.data || {}
     if (images.value.length) activeImage.value = images.value[0]
-  } catch { /* ignore */ }
-  finally { loading.value = false }
+  } catch (err: any) {
+    errorMessage.value = err?.message || '加载产品详情失败'
+  } finally {
+    loading.value = false
+  }
 })
 </script>
 

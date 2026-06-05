@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 产品模块：产品分类、产品、规格、图片管理 -->
+    <parent>
+        <groupId>com.xlx</groupId>
+        <artifactId>xlx-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>xlx-product</artifactId>
+    <name>xlx-product</name>
+    <description>产品模块 — 分类、产品、规格、图片的 CRUD</description>
+
+    <!--
+    模块说明：xlx-product（产品模块）
+    ============================================================
+    职责：产品分类、产品信息、产品规格、产品图片的管理
+    包名：com.xlx.api.product
+    依赖：xlx-common
+
+    包含文件（14 个）：
+      entity/ProductCategory.java   — 产品分类实体（product_category 表，支持父子层级）
+      entity/Product.java           — 产品实体（product 表，含中英文双语字段）
+      entity/ProductSpec.java       — 产品规格实体（product_spec 表，如材质、丝径）
+      entity/ProductImage.java      — 产品图片实体（product_image 表）
+      mapper/ProductCategoryMapper.java — 分类 Mapper
+      mapper/ProductMapper.java         — 产品 Mapper
+      mapper/ProductSpecMapper.java     — 规格 Mapper
+      mapper/ProductImageMapper.java    — 图片 Mapper
+      service/ProductCategoryService.java — 分类服务（树形查询、CRUD）
+      service/ProductService.java         — 产品服务（分页、推荐、详情组装）
+      service/ProductSpecService.java     — 规格服务
+      service/ProductImageService.java    — 图片服务
+      controller/CategoryController.java  — 分类管理接口（/api/admin/categories）
+      controller/ProductController.java   — 产品管理接口（/api/admin/products）
+
+    API 路径：/api/admin/categories/**, /api/admin/products/**
+    ============================================================
+    -->
+
+    <dependencies>
+        <dependency>
+            <groupId>com.xlx</groupId>
+            <artifactId>xlx-common</artifactId>
+        </dependency>
+    </dependencies>
+</project>

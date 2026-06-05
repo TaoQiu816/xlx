@@ -1,0 +1,5 @@
+com/xlx/api/auth/mapper/AdminUserMapper.class
+com/xlx/api/auth/controller/AuthController.class
+com/xlx/api/auth/entity/AdminUser.class
+com/xlx/api/auth/service/AuthService.class
+com/xlx/api/auth/config/AuthInterceptor.class

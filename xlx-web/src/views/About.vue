@@ -10,7 +10,7 @@ defineProps<{
     <section class="bg-primary-900 text-white py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 class="text-3xl md:text-4xl font-bold mb-4">关于我们</h1>
-        <p class="text-blue-200 text-lg">了解安平县鑫联信金属丝网厂</p>
+        <p class="text-blue-200 text-lg">了解鑫连鑫丝网厂</p>
       </div>
     </section>
 
@@ -22,7 +22,7 @@ defineProps<{
             <h2 class="text-2xl font-bold text-steel-900 mb-6">公司简介</h2>
             <div class="space-y-4 text-steel-600 leading-relaxed">
               <p>
-                安平县鑫联信金属丝网厂位于中国丝网之都——河北省安平县，是一家专业生产金属丝和丝网产品的企业。公司拥有多年的生产经验，技术力量雄厚，检测设备齐全。
+                鑫连鑫丝网厂位于中国丝网之都——江苏省南通市，是一家专业生产金属丝和丝网产品的企业。公司拥有多年的生产经验，技术力量雄厚，检测设备齐全。
               </p>
               <p>
                 我们主要产品涵盖金属丝类（镀锌铁丝、不锈钢丝、退火丝、PVC涂塑丝等）和丝网类（电焊网片、荷兰网、护栏网、窗纱、钢板网、钢格板等），广泛应用于建筑、农业、工业、交通等领域。
@@ -73,7 +73,7 @@ defineProps<{
               <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
             </div>
             <h3 class="font-bold text-steel-800 mb-3">源头厂家</h3>
-            <p class="text-steel-600 text-sm leading-relaxed">自有工厂坐落于安平县丝网产业园区，从原料到成品全流程把控，省去中间环节，为客户提供最具竞争力的价格。</p>
+            <p class="text-steel-600 text-sm leading-relaxed">自有工厂坐落于南通市丝网产业园区，从原料到成品全流程把控，省去中间环节，为客户提供最具竞争力的价格。</p>
           </div>
           <div class="p-6 border border-steel-100 rounded-lg">
             <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">

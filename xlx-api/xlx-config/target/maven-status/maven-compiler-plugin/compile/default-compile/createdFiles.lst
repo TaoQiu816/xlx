@@ -1,0 +1,4 @@
+com/xlx/api/config/controller/SiteConfigController.class
+com/xlx/api/config/entity/SiteConfig.class
+com/xlx/api/config/mapper/SiteConfigMapper.class
+com/xlx/api/config/service/SiteConfigService.class

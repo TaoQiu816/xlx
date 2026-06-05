@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 公共库模块：提供 Result、异常处理、JWT 工具、MyBatis 配置等共享组件 -->
+    <parent>
+        <groupId>com.xlx</groupId>
+        <artifactId>xlx-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>xlx-common</artifactId>
+    <name>xlx-common</name>
+    <description>公共库 — 统一响应、异常处理、JWT、MyBatis 配置</description>
+
+    <!--
+    模块说明：xlx-common（公共库）
+    ============================================================
+    职责：提供所有模块共用的基础类和工具
+    包名：com.xlx.api.common / com.xlx.api.util / com.xlx.api.config
+    依赖：无内部模块依赖（最底层模块）
+
+    包含文件：
+      common/Result.java            — 统一 API 响应封装 {code, message, data}
+      common/PageResult.java        — 分页查询结果封装 {total, list}
+      common/BusinessException.java — 业务异常类（用于主动抛出可预期错误）
+      common/GlobalExceptionHandler.java — 全局异常处理器（统一捕获并格式化错误响应）
+      util/JwtUtil.java             — JWT 工具类（生成/解析 Token）
+      config/MyBatisPlusConfig.java — MyBatis Plus 分页插件配置
+    ============================================================
+    -->
+
+    <dependencies>
+        <!-- Spring Boot Web（提供 REST 控制器支持） -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- 参数校验 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- MyBatis Plus ORM -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+        </dependency>
+
+        <!-- JWT 令牌生成与解析 -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- BCrypt 密码加密 -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+        </dependency>
+    </dependencies>
+</project>

@@ -4,9 +4,9 @@
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
         <router-link to="/" class="flex items-center gap-3">
-          <img :src="'/logo.png'" alt="鑫联信" class="h-10 w-auto" />
+          <img :src="'/logo.png'" alt="鑫连鑫" class="h-10 w-auto" />
           <div class="hidden sm:block">
-            <div class="text-lg font-bold text-primary-700">鑫联信金属丝网</div>
+            <div class="text-lg font-bold text-primary-700">鑫连鑫金属丝网</div>
           </div>
         </router-link>
 

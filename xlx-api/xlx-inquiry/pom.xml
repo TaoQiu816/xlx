@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 询盘模块：客户询盘管理 -->
+    <parent>
+        <groupId>com.xlx</groupId>
+        <artifactId>xlx-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>xlx-inquiry</artifactId>
+    <name>xlx-inquiry</name>
+    <description>询盘模块 — 客户询盘提交、状态管理、备注</description>
+
+    <!--
+    模块说明：xlx-inquiry（询盘模块）
+    ============================================================
+    职责：客户询盘的提交、查询、状态流转和备注管理
+    包名：com.xlx.api.inquiry
+    依赖：xlx-common
+
+    包含文件（4 个）：
+      entity/Inquiry.java           — 询盘实体（inquiry 表）
+      mapper/InquiryMapper.java     — 询盘 Mapper
+      service/InquiryService.java   — 询盘服务（分页查询、状态更新、备注管理）
+      controller/InquiryController.java — 询盘管理接口
+
+    询盘状态流转：
+      new → contacted → quoted → sample_confirmed → order_confirmed → closed
+      也可标记为 invalid（无效询盘）
+
+    API 路径：/api/admin/inquiries/**
+    ============================================================
+    -->
+
+    <dependencies>
+        <dependency>
+            <groupId>com.xlx</groupId>
+            <artifactId>xlx-common</artifactId>
+        </dependency>
+
+        <!-- 测试 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.2.224</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,8 @@
+com/xlx/api/content/service/CertificateService.class
+com/xlx/api/content/service/FactoryImageService.class
+com/xlx/api/content/entity/FactoryImage.class
+com/xlx/api/content/entity/Certificate.class
+com/xlx/api/content/mapper/CertificateMapper.class
+com/xlx/api/content/controller/CertificateController.class
+com/xlx/api/content/controller/FactoryImageController.class
+com/xlx/api/content/mapper/FactoryImageMapper.class

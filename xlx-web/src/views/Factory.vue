@@ -26,7 +26,7 @@ onMounted(async () => {
     <section class="bg-primary-900 text-white py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 class="text-3xl md:text-4xl font-bold mb-4">工厂展示</h1>
-        <p class="text-blue-200 text-lg">走进鑫联信，了解我们的生产实力</p>
+        <p class="text-blue-200 text-lg">走进鑫连鑫，了解我们的生产实力</p>
       </div>
     </section>
 

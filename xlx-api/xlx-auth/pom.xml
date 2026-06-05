@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 认证模块：管理员登录、JWT 拦截器 -->
+    <parent>
+        <groupId>com.xlx</groupId>
+        <artifactId>xlx-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>xlx-auth</artifactId>
+    <name>xlx-auth</name>
+    <description>认证模块 — 管理员登录、JWT 鉴权拦截器</description>
+
+    <!--
+    模块说明：xlx-auth（认证模块）
+    ============================================================
+    职责：管理员身份认证、JWT Token 签发与校验
+    包名：com.xlx.api.auth
+    依赖：xlx-common
+
+    包含文件：
+      entity/AdminUser.java         — 管理员实体（对应 admin_user 表）
+      mapper/AdminUserMapper.java   — 管理员数据访问层
+      service/AuthService.java      — 认证服务（登录验证、Token 签发、密码加密）
+      controller/AuthController.java — 认证接口（POST /api/admin/auth/login, GET /profile）
+      config/AuthInterceptor.java   — JWT 拦截器（校验 Token、注入 adminId）
+
+    API 路径：/api/admin/auth/**
+    ============================================================
+    -->
+
+    <dependencies>
+        <dependency>
+            <groupId>com.xlx</groupId>
+            <artifactId>xlx-common</artifactId>
+        </dependency>
+
+        <!-- 测试 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

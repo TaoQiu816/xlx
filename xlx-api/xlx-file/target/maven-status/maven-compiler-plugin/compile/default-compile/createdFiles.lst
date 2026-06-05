@@ -1,0 +1,4 @@
+com/xlx/api/file/entity/FileUpload.class
+com/xlx/api/file/service/FileUploadService.class
+com/xlx/api/file/controller/UploadController.class
+com/xlx/api/file/mapper/FileUploadMapper.class

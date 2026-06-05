@@ -1,0 +1,14 @@
+com/xlx/api/product/entity/ProductSpec.class
+com/xlx/api/product/controller/CategoryController.class
+com/xlx/api/product/service/ProductService.class
+com/xlx/api/product/entity/Product.class
+com/xlx/api/product/controller/ProductController.class
+com/xlx/api/product/mapper/ProductMapper.class
+com/xlx/api/product/mapper/ProductImageMapper.class
+com/xlx/api/product/service/ProductImageService.class
+com/xlx/api/product/service/ProductSpecService.class
+com/xlx/api/product/entity/ProductCategory.class
+com/xlx/api/product/entity/ProductImage.class
+com/xlx/api/product/mapper/ProductSpecMapper.class
+com/xlx/api/product/mapper/ProductCategoryMapper.class
+com/xlx/api/product/service/ProductCategoryService.class

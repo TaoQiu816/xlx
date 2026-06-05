@@ -1,0 +1,4 @@
+com/xlx/api/inquiry/mapper/InquiryMapper.class
+com/xlx/api/inquiry/entity/Inquiry.class
+com/xlx/api/inquiry/controller/InquiryController.class
+com/xlx/api/inquiry/service/InquiryService.class

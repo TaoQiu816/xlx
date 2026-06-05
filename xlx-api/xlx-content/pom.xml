@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 内容模块：工厂图片、证书管理 -->
+    <parent>
+        <groupId>com.xlx</groupId>
+        <artifactId>xlx-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>xlx-content</artifactId>
+    <name>xlx-content</name>
+    <description>内容模块 — 工厂展示图片、资质证书管理</description>
+
+    <!--
+    模块说明：xlx-content（内容模块）
+    ============================================================
+    职责：工厂展示图片和资质证书的管理
+    包名：com.xlx.api.content
+    依赖：xlx-common
+
+    包含文件（8 个）：
+      entity/FactoryImage.java      — 工厂图片实体（factory_image 表）
+      entity/Certificate.java       — 证书实体（certificate 表，含证书类型和颁发日期）
+      mapper/FactoryImageMapper.java — 工厂图片 Mapper
+      mapper/CertificateMapper.java  — 证书 Mapper
+      service/FactoryImageService.java — 工厂图片服务（分页、全量查询、CRUD）
+      service/CertificateService.java  — 证书服务（分页、全量查询、CRUD）
+      controller/FactoryImageController.java — 工厂图片管理接口
+      controller/CertificateController.java  — 证书管理接口
+
+    API 路径：/api/admin/factory-images/**, /api/admin/certificates/**
+    ============================================================
+    -->
+
+    <dependencies>
+        <dependency>
+            <groupId>com.xlx</groupId>
+            <artifactId>xlx-common</artifactId>
+        </dependency>
+    </dependencies>
+</project>

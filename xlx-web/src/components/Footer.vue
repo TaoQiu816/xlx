@@ -4,7 +4,7 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Company info -->
         <div>
-          <h3 class="text-white font-bold text-lg mb-4">安平县鑫联信金属丝网厂</h3>
+          <h3 class="text-white font-bold text-lg mb-4">鑫连鑫丝网厂</h3>
           <p class="text-sm leading-relaxed">
             专业丝网与金属丝产品制造商，多年生产经验，支持标准规格供应与定制加工。
           </p>
@@ -36,7 +36,7 @@
       </div>
 
       <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-500">
-        <p>&copy; {{ new Date().getFullYear() }} 安平县鑫联信金属丝网厂 All Rights Reserved.</p>
+        <p>&copy; {{ new Date().getFullYear() }} 鑫连鑫丝网厂 All Rights Reserved.</p>
       </div>
     </div>
   </footer>
