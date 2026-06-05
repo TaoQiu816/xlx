@@ -51,7 +51,7 @@ onMounted(async () => {
             {{ config?.banner_title || '鑫连鑫丝网厂' }}
           </h1>
           <p class="text-lg md:text-xl text-blue-200 mb-8 leading-relaxed">
-            {{ config?.banner_subtitle || '专业丝网与金属丝产品制造商，多年生产经验，支持标准规格供应与定制加工。' }}
+            {{ config?.banner_subtitle || '专业丝网与金属丝产品制造商，23年生产经验，支持标准规格供应与定制加工。' }}
           </p>
           <div class="flex flex-wrap gap-4">
             <router-link to="/products" class="inline-flex items-center px-8 py-3 bg-white text-primary-700 font-semibold rounded hover:bg-blue-50 transition-colors text-lg">

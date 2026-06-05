@@ -6,7 +6,7 @@
         <div>
           <h3 class="text-white font-bold text-lg mb-4">鑫连鑫丝网厂</h3>
           <p class="text-sm leading-relaxed">
-            专业丝网与金属丝产品制造商，多年生产经验，支持标准规格供应与定制加工。
+            专业丝网与金属丝产品制造商，23年生产经验，支持标准规格供应与定制加工。
           </p>
         </div>
 

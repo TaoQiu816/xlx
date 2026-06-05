@@ -18,6 +18,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${upload.path:./uploads}")
     private String uploadPath;
 
+    @Value("${cors.allowed-origins:http://localhost:3000,http://localhost:3001}")
+    private String allowedOrigins;
+
     private final AuthInterceptor authInterceptor;
 
     public WebMvcConfig(AuthInterceptor authInterceptor) {
@@ -26,12 +29,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     /**
      * 配置跨域规则
-     * 允许所有来源的 /api/** 请求，支持凭证
+     * 通过 cors.allowed-origins 环境变量控制，开发环境默认 localhost:3000/3001
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        String[] origins = allowedOrigins.split(",");
         registry.addMapping("/api/**")
-                .allowedOriginPatterns("*")
+                .allowedOriginPatterns(origins)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true)
