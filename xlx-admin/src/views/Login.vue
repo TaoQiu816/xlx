@@ -2,7 +2,7 @@
   <div class="min-h-screen flex items-center justify-center bg-gray-100">
     <el-card class="w-96">
       <template #header>
-        <h2 class="text-xl font-bold text-center">鑫联信后台管理</h2>
+        <h2 class="text-xl font-bold text-center">鑫连鑫后台管理</h2>
       </template>
       <el-form ref="formRef" :model="form" :rules="rules" @keyup.enter="handleLogin">
         <el-form-item label="用户名" prop="username">

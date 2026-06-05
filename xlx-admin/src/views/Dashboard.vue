@@ -1,28 +1,28 @@
 <template>
   <div>
-    <el-row :gutter="20">
-      <el-col :span="6">
+    <el-row :gutter="16">
+      <el-col :xs="12" :sm="12" :md="6" class="mb-4">
         <el-card shadow="hover">
           <template #header>产品数量</template>
-          <div class="text-3xl font-bold text-blue-600">{{ stats.productCount }}</div>
+          <div class="text-2xl md:text-3xl font-bold text-blue-600">{{ stats.productCount }}</div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="12" :sm="12" :md="6" class="mb-4">
         <el-card shadow="hover">
           <template #header>总询盘</template>
-          <div class="text-3xl font-bold text-green-600">{{ stats.inquiryCount }}</div>
+          <div class="text-2xl md:text-3xl font-bold text-green-600">{{ stats.inquiryCount }}</div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="12" :sm="12" :md="6" class="mb-4">
         <el-card shadow="hover">
           <template #header>新询盘</template>
-          <div class="text-3xl font-bold text-orange-500">{{ stats.newInquiryCount }}</div>
+          <div class="text-2xl md:text-3xl font-bold text-orange-500">{{ stats.newInquiryCount }}</div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="12" :sm="12" :md="6" class="mb-4">
         <el-card shadow="hover">
           <template #header>分类数量</template>
-          <div class="text-3xl font-bold text-purple-600">{{ stats.categoryCount }}</div>
+          <div class="text-2xl md:text-3xl font-bold text-purple-600">{{ stats.categoryCount }}</div>
         </el-card>
       </el-col>
     </el-row>
@@ -32,12 +32,12 @@
         <span class="font-bold">最新询盘</span>
       </template>
       <el-table :data="recentInquiries" stripe>
-        <el-table-column prop="created_at" label="时间" width="180">
-          <template #default="{ row }">{{ formatDate(row.created_at) }}</template>
+        <el-table-column prop="createdAt" label="时间" width="180">
+          <template #default="{ row }">{{ formatDate(row.createdAt) }}</template>
         </el-table-column>
         <el-table-column prop="name" label="客户" width="120" />
         <el-table-column prop="company" label="公司" />
-        <el-table-column prop="product_name" label="产品" />
+        <el-table-column prop="productName" label="产品" />
         <el-table-column prop="status" label="状态" width="100">
           <template #default="{ row }">
             <el-tag :type="statusType(row.status)" size="small">{{ statusLabel(row.status) }}</el-tag>

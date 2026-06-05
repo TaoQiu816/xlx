@@ -1,8 +1,9 @@
 <template>
   <el-container class="min-h-screen">
-    <el-aside width="220px" class="bg-gray-800">
+    <el-aside :width="isMobile ? (sidebarOpen ? '220px' : '0px') : '220px'"
+      class="bg-gray-800 transition-all duration-300 overflow-hidden">
       <div class="text-white text-center py-4 font-bold text-lg border-b border-gray-700">
-        鑫联信管理后台
+        鑫连鑫管理后台
       </div>
       <el-menu
         :default-active="route.path"
@@ -35,14 +36,19 @@
       </el-menu>
     </el-aside>
     <el-container>
-      <el-header class="bg-white border-b flex items-center justify-between px-6">
-        <span class="text-lg font-medium">{{ titleMap[route.name as string] || route.name }}</span>
+      <el-header class="bg-white border-b flex items-center justify-between px-4 md:px-6">
+        <div class="flex items-center gap-3">
+          <el-button v-if="isMobile" @click="sidebarOpen = !sidebarOpen" text>
+            <el-icon size="20"><Fold v-if="sidebarOpen" /><Expand v-else /></el-icon>
+          </el-button>
+          <span class="text-lg font-medium">{{ titleMap[route.name as string] || route.name }}</span>
+        </div>
         <div class="flex items-center gap-4">
-          <span class="text-sm text-gray-500">{{ authStore.userInfo?.nickname || authStore.userInfo?.username }}</span>
-          <el-button type="danger" size="small" @click="handleLogout">退出登录</el-button>
+          <span class="text-sm text-gray-500 hidden sm:inline">{{ authStore.userInfo?.nickname || authStore.userInfo?.username }}</span>
+          <el-button type="danger" size="small" @click="handleLogout">退出</el-button>
         </div>
       </el-header>
-      <el-main class="bg-gray-50">
+      <el-main class="bg-gray-50 p-4 md:p-6">
         <router-view />
       </el-main>
     </el-container>
@@ -50,13 +56,31 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { Fold, Expand } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
+
+const isMobile = ref(window.innerWidth < 768)
+const sidebarOpen = ref(!isMobile.value)
+
+const checkMobile = () => {
+  isMobile.value = window.innerWidth < 768
+  if (!isMobile.value) sidebarOpen.value = true
+}
+
+onMounted(() => {
+  authStore.fetchProfile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
+})
 
 const titleMap: Record<string, string> = {
   Dashboard: '控制台',
@@ -70,10 +94,6 @@ const titleMap: Record<string, string> = {
   InquiryDetail: '询盘详情',
   SiteConfig: '网站配置',
 }
-
-onMounted(() => {
-  authStore.fetchProfile()
-})
 
 const handleLogout = () => {
   authStore.logout()
