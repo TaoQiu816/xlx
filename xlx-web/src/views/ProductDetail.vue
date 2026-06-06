@@ -7,8 +7,12 @@ import { useSEO } from '../composables/useSEO'
 import { useHead } from '@unhead/vue'
 import { useProductSchema, useBreadcrumbSchema } from '../composables/useJsonLd'
 import { langField } from '../composables/useLangField'
+import { useQuoteCart } from '../composables/useQuoteCart'
+import { useToast } from '../composables/useToast'
 
 const { t } = useI18n()
+const { addItem, hasItem } = useQuoteCart()
+const toast = useToast()
 
 useSEO()
 
@@ -24,6 +28,26 @@ const loading = ref(true)
 const activeImage = ref('')
 const showInquiry = ref(false)
 const relatedProducts = ref<any[]>([])
+
+const isInQuoteCart = computed(() => product.value.id ? hasItem(product.value.id) : false)
+
+function handleAddToQuoteCart() {
+  if (!product.value.id) return
+  if (isInQuoteCart.value) {
+    toast.show(t('quoteCart.addItemExists'), 'info')
+    return
+  }
+  addItem({
+    productId: product.value.id,
+    slug: product.value.slug || '',
+    nameCn: product.value.nameCn || product.value.name || '',
+    nameEn: product.value.nameEn || '',
+    image: product.value.mainImage || '',
+    quantity: '',
+    specification: '',
+  })
+  toast.show(t('quoteCart.addItemSuccess'), 'success')
+}
 
 // Lightbox
 const showLightbox = ref(false)
@@ -208,6 +232,9 @@ onMounted(async () => {
             <div class="flex flex-wrap gap-3 mb-8">
               <button @click="showInquiry = true" class="px-8 py-3 bg-primary-600 text-white font-semibold rounded hover:bg-primary-700 transition-colors">
                 {{ t('productDetail.inquireNow') }}
+              </button>
+              <button @click="handleAddToQuoteCart" class="px-8 py-3 border border-primary-600 text-primary-600 font-semibold rounded hover:bg-primary-50 transition-colors">
+                {{ isInQuoteCart ? t('quoteCart.added') : t('quoteCart.addItem') }}
               </button>
               <a v-if="product.phone" :href="`tel:${product.phone}`"
                 class="px-8 py-3 border border-primary-600 text-primary-600 font-semibold rounded hover:bg-primary-50 transition-colors">

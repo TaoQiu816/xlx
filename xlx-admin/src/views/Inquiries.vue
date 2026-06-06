@@ -41,7 +41,12 @@
       <el-table-column prop="name" label="客户" width="100" show-overflow-tooltip />
       <el-table-column prop="company" label="公司" min-width="140" show-overflow-tooltip />
       <el-table-column prop="email" label="邮箱" min-width="160" show-overflow-tooltip />
-      <el-table-column prop="productName" label="产品" min-width="120" show-overflow-tooltip />
+      <el-table-column label="产品" min-width="120" show-overflow-tooltip>
+        <template #default="{ row }">
+          <el-tag v-if="!row.productName" type="info" size="small">多产品</el-tag>
+          <span v-else>{{ row.productName }}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="country" label="国家" width="90" />
       <el-table-column label="状态" width="140">
         <template #default="{ row }">

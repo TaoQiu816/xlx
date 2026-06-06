@@ -26,6 +26,12 @@
             </svg>
             {{ config.phone }}
           </a>
+          <router-link to="/quote-cart" class="cart-link" :title="t('quoteCart.title')">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+            </svg>
+            <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
+          </router-link>
           <button class="lang-switch" @click="toggleLang" :title="currentLang === 'zh' ? 'Switch to English' : '切换到中文'">
             {{ currentLang === 'zh' ? 'EN' : '中' }}
           </button>
@@ -72,6 +78,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { setLocale, getLocale } from '../i18n'
+import { useQuoteCart } from '../composables/useQuoteCart'
 
 defineProps<{
   config?: Record<string, string>
@@ -82,6 +89,7 @@ const { t } = useI18n()
 const mobileOpen = ref(false)
 const isScrolled = ref(false)
 const currentLang = ref(getLocale())
+const { count: cartCount } = useQuoteCart()
 
 const navItems = computed(() => [
   { label: t('nav.home'), path: '/' },
@@ -203,6 +211,40 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 .lang-switch:hover {
   border-color: #1e40af;
   color: #1e40af;
+}
+
+/* Cart link */
+.cart-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: #475569;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.cart-link:hover {
+  color: #1e40af;
+  background: #f1f5f9;
+}
+
+.cart-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  text-align: center;
+  color: white;
+  background: #ef4444;
+  border-radius: 9px;
 }
 
 /* Mobile */

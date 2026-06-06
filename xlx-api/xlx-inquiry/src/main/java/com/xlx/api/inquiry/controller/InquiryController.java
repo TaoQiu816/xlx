@@ -3,9 +3,12 @@ package com.xlx.api.inquiry.controller;
 import com.xlx.api.common.PageResult;
 import com.xlx.api.common.Result;
 import com.xlx.api.inquiry.entity.Inquiry;
+import com.xlx.api.inquiry.entity.InquiryItem;
 import com.xlx.api.inquiry.service.InquiryService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,10 +37,15 @@ public class InquiryController {
         return Result.ok(service.list(page, size, status, keyword, startDate, endDate));
     }
 
-    /** 获取询盘详情 */
+    /** 获取询盘详情（含产品明细） */
     @GetMapping("/{id}")
-    public Result<Inquiry> detail(@PathVariable Long id) {
-        return Result.ok(service.getById(id));
+    public Result<Map<String, Object>> detail(@PathVariable Long id) {
+        Inquiry inquiry = service.getById(id);
+        List<InquiryItem> items = service.getItems(id);
+        Map<String, Object> data = new HashMap<>();
+        data.put("inquiry", inquiry);
+        data.put("items", items);
+        return Result.ok(data);
     }
 
     /** 更新处理状态 */

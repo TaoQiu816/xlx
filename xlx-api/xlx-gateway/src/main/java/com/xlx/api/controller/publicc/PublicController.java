@@ -1,5 +1,6 @@
 package com.xlx.api.controller.publicc;
 
+import com.xlx.api.common.BusinessException;
 import com.xlx.api.common.PageResult;
 import com.xlx.api.common.Result;
 import com.xlx.api.config.entity.SiteConfig;
@@ -11,6 +12,7 @@ import com.xlx.api.content.service.FactoryImageService;
 import com.xlx.api.file.entity.FileUpload;
 import com.xlx.api.file.service.FileUploadService;
 import com.xlx.api.inquiry.entity.Inquiry;
+import com.xlx.api.inquiry.entity.InquiryItem;
 import com.xlx.api.inquiry.service.InquiryService;
 import com.xlx.api.product.entity.Product;
 import com.xlx.api.product.entity.ProductCategory;
@@ -20,7 +22,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -75,13 +81,6 @@ public class PublicController {
 
     /**
      * 分页查询产品列表
-     *
-     * @param page       页码
-     * @param size       每页数量
-     * @param categoryId 分类 ID（可选）
-     * @param keyword    搜索关键词（可选，按名称模糊匹配）
-     * @param sort       排序方式（可选：latest/name_asc）
-     * @return 分页产品列表
      */
     @GetMapping("/products")
     public Result<PageResult<Product>> products(
@@ -95,9 +94,6 @@ public class PublicController {
 
     /**
      * 获取推荐产品列表
-     *
-     * @param limit 数量限制，默认 8
-     * @return 推荐产品列表
      */
     @GetMapping("/products/featured")
     public Result<List<Product>> featuredProducts(
@@ -107,15 +103,11 @@ public class PublicController {
 
     /**
      * 获取产品详情（含规格和图片）
-     *
-     * @param slug 产品 URL 标识
-     * @return 产品详情
      */
     @GetMapping("/products/{slug}")
     public Result<Map<String, Object>> productDetail(@PathVariable String slug) {
         Product product = productService.getBySlug(slug);
         Map<String, Object> detail = productService.getDetailById(product.getId());
-        // 附加同分类推荐产品
         detail.put("relatedProducts", productService.listRelated(
                 product.getCategoryId(), product.getId(), 4));
         return Result.ok(detail);
@@ -138,22 +130,90 @@ public class PublicController {
     }
 
     /**
-     * 提交询盘
-     *
-     * @param inquiry 询盘信息
-     * @return 操作结果
+     * 提交询盘（支持单产品和多产品）
+     * <p>如果 items 非空，创建 inquiry 主记录 + inquiry_item 明细。
+     * 如果 items 为空且 productId 非空，走原有单品询盘逻辑。</p>
      */
     @PostMapping("/inquiries")
-    public Result<Void> submitInquiry(@Valid @RequestBody Inquiry inquiry) {
-        inquiryService.create(inquiry);
-        return Result.ok();
+    public Result<Map<String, Object>> submitInquiry(@Valid @RequestBody InquirySubmitRequest request) {
+        Inquiry inquiry = new Inquiry();
+        inquiry.setName(request.name);
+        inquiry.setCompany(request.company);
+        inquiry.setPhone(request.phone);
+        inquiry.setEmail(request.email);
+        inquiry.setWechat(request.wechat);
+        inquiry.setWhatsapp(request.whatsapp);
+        inquiry.setCountry(request.country);
+        inquiry.setMessage(request.message);
+        inquiry.setFileUrl(request.fileUrl);
+
+        if (request.items != null && !request.items.isEmpty()) {
+            // 多产品询盘
+            if (request.items.size() > 20) {
+                throw new BusinessException("产品数量不能超过 20 个");
+            }
+            List<InquiryItem> items = new ArrayList<>();
+            for (CartItemDTO cartItem : request.items) {
+                InquiryItem item = new InquiryItem();
+                item.setProductId(cartItem.productId);
+                item.setProductNameCn(cartItem.productNameCn);
+                item.setProductNameEn(cartItem.productNameEn != null ? cartItem.productNameEn : "");
+                item.setQuantity(cartItem.quantity != null ? cartItem.quantity : "");
+                item.setSpecification(cartItem.specification != null ? cartItem.specification : "");
+                items.add(item);
+            }
+            Inquiry saved = inquiryService.createWithItems(inquiry, items);
+            return Result.ok(Map.of("id", saved.getId()));
+        } else {
+            // 单品询盘（兼容原逻辑）
+            inquiry.setProductId(request.productId);
+            inquiry.setProductName(request.productName);
+            inquiry.setQuantity(request.quantity);
+            inquiry.setSpecification(request.specification);
+            inquiryService.create(inquiry);
+            return Result.ok(Map.of("id", inquiry.getId()));
+        }
+    }
+
+    /** 询盘提交请求体 */
+    public static class InquirySubmitRequest {
+        @NotBlank(message = "客户姓名不能为空")
+        public String name;
+        public String company;
+        public String phone;
+        @Email(message = "邮箱格式不正确")
+        public String email;
+        public String wechat;
+        public String whatsapp;
+        public String country;
+        public String message;
+        public String fileUrl;
+        // 单品询盘字段（兼容）
+        public Long productId;
+        public String productName;
+        public String quantity;
+        public String specification;
+        // 多产品询盘
+        @Size(max = 20, message = "产品数量不能超过 20 个")
+        public List<CartItemDTO> items;
+    }
+
+    /** 询价车产品项 */
+    public static class CartItemDTO {
+        public Long productId;
+        @NotBlank(message = "产品名称不能为空")
+        @Size(max = 200, message = "产品名称不能超过 200 个字符")
+        public String productNameCn;
+        @Size(max = 200, message = "英文产品名称不能超过 200 个字符")
+        public String productNameEn;
+        @Size(max = 100, message = "数量不能超过 100 个字符")
+        public String quantity;
+        @Size(max = 500, message = "规格说明不能超过 500 个字符")
+        public String specification;
     }
 
     /**
      * 上传文件（用于询盘附件等）
-     *
-     * @param file 上传的文件
-     * @return 文件上传记录
      */
     @PostMapping("/upload")
     public Result<FileUpload> upload(@RequestParam("file") MultipartFile file) {

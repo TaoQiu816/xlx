@@ -5,11 +5,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xlx.api.common.BusinessException;
 import com.xlx.api.common.PageResult;
 import com.xlx.api.inquiry.entity.Inquiry;
+import com.xlx.api.inquiry.entity.InquiryItem;
 import com.xlx.api.inquiry.mapper.InquiryMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,9 +29,11 @@ public class InquiryService {
     );
 
     private final InquiryMapper mapper;
+    private final InquiryItemService inquiryItemService;
 
-    public InquiryService(InquiryMapper mapper) {
+    public InquiryService(InquiryMapper mapper, InquiryItemService inquiryItemService) {
         this.mapper = mapper;
+        this.inquiryItemService = inquiryItemService;
     }
 
     /** 分页查询询盘（可按状态、关键词、日期范围筛选） */
@@ -65,9 +70,30 @@ public class InquiryService {
     }
 
     /** 创建询盘（前台提交，默认状态为 new） */
+    @Transactional
     public void create(Inquiry inquiry) {
         inquiry.setStatus("new");
         mapper.insert(inquiry);
+    }
+
+    /** 创建多产品询盘（带 items 明细） */
+    @Transactional
+    public Inquiry createWithItems(Inquiry inquiry, List<InquiryItem> items) {
+        inquiry.setStatus("new");
+        inquiry.setProductId(null);
+        inquiry.setProductName(null);
+        inquiry.setQuantity(null);
+        inquiry.setSpecification(null);
+        mapper.insert(inquiry);
+        if (items != null && !items.isEmpty()) {
+            inquiryItemService.createBatch(inquiry.getId(), items);
+        }
+        return inquiry;
+    }
+
+    /** 获取询盘的产品明细列表 */
+    public List<InquiryItem> getItems(Long inquiryId) {
+        return inquiryItemService.listByInquiryId(inquiryId);
     }
 
     /** 更新询盘处理状态 */

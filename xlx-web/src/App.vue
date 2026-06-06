@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import ToastContainer from './components/ToastContainer.vue'
 import { siteApi } from './api/site'
 
 const config = ref<Record<string, string>>({})
@@ -41,6 +42,8 @@ onUnmounted(() => {
       </router-view>
     </main>
     <Footer :config="config" />
+
+    <ToastContainer />
 
     <!-- 返回顶部 -->
     <transition name="fade">

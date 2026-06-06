@@ -7,8 +7,12 @@ import SkeletonCard from '../components/SkeletonCard.vue'
 import { useSEO } from '../composables/useSEO'
 import { useBreadcrumbSchema } from '../composables/useJsonLd'
 import { langField } from '../composables/useLangField'
+import { useQuoteCart } from '../composables/useQuoteCart'
+import { useToast } from '../composables/useToast'
 
 const { t } = useI18n()
+const { addItem, hasItem } = useQuoteCart()
+const toast = useToast()
 
 useSEO({
   title: t('products.title'),
@@ -69,6 +73,23 @@ const goToPage = (p: number) => {
   if (p < 1 || p > totalPages.value) return
   page.value = p
   loadProducts()
+}
+
+const handleAddToQuoteCart = (p: any) => {
+  if (hasItem(p.id)) {
+    toast.show(t('quoteCart.addItemExists'), 'info')
+    return
+  }
+  addItem({
+    productId: p.id,
+    slug: p.slug || '',
+    nameCn: p.nameCn || p.name || '',
+    nameEn: p.nameEn || '',
+    image: p.mainImage || '',
+    quantity: '',
+    specification: '',
+  })
+  toast.show(t('quoteCart.addItemSuccess'), 'success')
 }
 
 watch(() => route.query.category, (val) => {
@@ -145,21 +166,30 @@ onMounted(() => {
 
           <!-- Products -->
           <div v-else class="grid grid-cols-2 md:grid-cols-3 gap-6">
-            <router-link v-for="p in products" :key="p.id" :to="`/products/${p.slug}`"
-              class="bg-white rounded-lg border border-steel-100 overflow-hidden hover:shadow-lg transition-shadow group">
-              <div class="aspect-square bg-steel-100 overflow-hidden">
-                <img v-if="p.mainImage" :src="p.mainImage" :alt="p.nameCn" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
-                <div v-else class="w-full h-full flex items-center justify-center text-steel-400">
-                  <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <div v-for="p in products" :key="p.id"
+              class="bg-white rounded-lg border border-steel-100 overflow-hidden hover:shadow-lg transition-shadow group relative">
+              <router-link :to="`/products/${p.slug}`" class="block">
+                <div class="aspect-square bg-steel-100 overflow-hidden">
+                  <img v-if="p.mainImage" :src="p.mainImage" :alt="p.nameCn" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                  <div v-else class="w-full h-full flex items-center justify-center text-steel-400">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  </div>
                 </div>
-              </div>
-              <div class="p-4">
-                <h3 class="font-semibold text-steel-800 text-sm mb-1 line-clamp-2 group-hover:text-primary-600 transition-colors">{{ langField(p, 'name') || p.name }}</h3>
-                <p v-if="p.categoryName" class="text-xs text-steel-400">{{ p.categoryName }}</p>
-                <p v-if="p.showPrice && p.price" class="text-sm text-primary-600 font-semibold mt-2">{{ p.price }} {{ p.priceUnit }}</p>
-                <p v-else class="text-xs text-steel-400 mt-2">{{ t('products.contactForPrice') }}</p>
-              </div>
-            </router-link>
+                <div class="p-4">
+                  <h3 class="font-semibold text-steel-800 text-sm mb-1 line-clamp-2 group-hover:text-primary-600 transition-colors">{{ langField(p, 'name') || p.name }}</h3>
+                  <p v-if="p.categoryName" class="text-xs text-steel-400">{{ p.categoryName }}</p>
+                  <p v-if="p.showPrice && p.price" class="text-sm text-primary-600 font-semibold mt-2">{{ p.price }} {{ p.priceUnit }}</p>
+                  <p v-else class="text-xs text-steel-400 mt-2">{{ t('products.contactForPrice') }}</p>
+                </div>
+              </router-link>
+              <button @click.prevent="handleAddToQuoteCart(p)"
+                class="absolute bottom-14 right-2 w-10 h-10 min-w-[44px] min-h-[44px] flex items-center justify-center bg-primary-600 text-white rounded-full shadow-md hover:bg-primary-700 hover:shadow-lg transition-all z-10 active:scale-95"
+                :title="t('quoteCart.addItem')">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+              </button>
+            </div>
           </div>
 
           <!-- Pagination -->

@@ -51,6 +51,12 @@ const router = createRouter({
       component: () => import('../views/Contact.vue'),
       meta: { title: '联系我们' },
     },
+    {
+      path: '/quote-cart',
+      name: 'QuoteCart',
+      component: () => import('../views/QuoteCart.vue'),
+      meta: { title: '询价车' },
+    },
   ],
   scrollBehavior(_to, _from, savedPosition) {
     return savedPosition || { top: 0 }

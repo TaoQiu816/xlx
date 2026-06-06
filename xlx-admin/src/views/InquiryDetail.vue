@@ -41,6 +41,30 @@
           </div>
         </el-descriptions-item>
       </el-descriptions>
+
+      <!-- 多产品明细 -->
+      <div v-if="items.length > 0" class="mt-6">
+        <h3 class="text-lg font-bold mb-3">询价产品明细（{{ items.length }} 个产品）</h3>
+        <el-table :data="items" border stripe class="inquiry-items-table">
+          <el-table-column type="index" label="#" width="50" />
+          <el-table-column label="产品名称" min-width="150">
+            <template #default="{ row }">
+              <div class="font-medium">{{ row.productNameCn }}</div>
+              <div v-if="row.productNameEn" class="text-gray-500 text-xs mt-0.5">{{ row.productNameEn }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="quantity" label="数量" width="120">
+            <template #default="{ row }">
+              {{ row.quantity || '-' }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="specification" label="规格说明" min-width="200">
+            <template #default="{ row }">
+              {{ row.specification || '-' }}
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-card>
   </div>
 </template>
@@ -51,9 +75,19 @@ import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { inquiryApi } from '../api/inquiry'
 
+interface InquiryItem {
+  id: number
+  productId: number | null
+  productNameCn: string
+  productNameEn: string
+  quantity: string
+  specification: string
+}
+
 const route = useRoute()
 const loading = ref(false)
 const inquiry = ref<any>({})
+const items = ref<InquiryItem[]>([])
 const remark = ref('')
 
 const formatDate = (d: string) => d ? new Date(d).toLocaleString('zh-CN') : '-'
@@ -62,7 +96,15 @@ const loadDetail = async () => {
   loading.value = true
   try {
     const res: any = await inquiryApi.detail(Number(route.params.id))
-    inquiry.value = res.data || {}
+    const data = res.data || {}
+    // 兼容新旧格式：新格式返回 { inquiry, items }，旧格式直接返回 inquiry 对象
+    if (data.inquiry) {
+      inquiry.value = data.inquiry
+      items.value = data.items || []
+    } else {
+      inquiry.value = data
+      items.value = []
+    }
     remark.value = inquiry.value.remark || ''
   } finally { loading.value = false }
 }
@@ -88,6 +130,10 @@ onMounted(loadDetail)
 
   .inquiry-detail-desc :deep(.el-descriptions__table) {
     min-width: 500px;
+  }
+
+  .inquiry-items-table {
+    overflow-x: auto;
   }
 }
 </style>

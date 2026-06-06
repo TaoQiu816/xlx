@@ -5,12 +5,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xlx.api.common.BusinessException;
 import com.xlx.api.common.PageResult;
 import com.xlx.api.inquiry.entity.Inquiry;
+import com.xlx.api.inquiry.entity.InquiryItem;
+import com.xlx.api.inquiry.mapper.InquiryItemMapper;
 import com.xlx.api.inquiry.mapper.InquiryMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -29,13 +30,19 @@ class InquiryServiceTest {
     @Mock
     private InquiryMapper mapper;
 
-    @InjectMocks
+    @Mock
+    private InquiryItemMapper inquiryItemMapper;
+
     private InquiryService inquiryService;
+
+    private InquiryItemService inquiryItemService;
 
     private Inquiry sampleInquiry;
 
     @BeforeEach
     void setUp() {
+        inquiryItemService = new InquiryItemService(inquiryItemMapper);
+        inquiryService = new InquiryService(mapper, inquiryItemService);
         sampleInquiry = new Inquiry();
         sampleInquiry.setId(1L);
         sampleInquiry.setName("张三");
@@ -190,5 +197,53 @@ class InquiryServiceTest {
         inquiryService.delete(1L);
 
         verify(mapper).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("createWithItems — 创建多产品询盘")
+    void createWithItems_createsInquiryAndItems() {
+        Inquiry newInquiry = new Inquiry();
+        newInquiry.setName("John");
+        InquiryItem item1 = new InquiryItem();
+        item1.setProductId(1L);
+        item1.setProductNameCn("镀锌铁丝");
+        InquiryItem item2 = new InquiryItem();
+        item2.setProductId(2L);
+        item2.setProductNameCn("电焊网片");
+        when(mapper.insert(any(Inquiry.class))).thenReturn(1);
+        when(inquiryItemMapper.insert(any(InquiryItem.class))).thenReturn(1);
+
+        Inquiry result = inquiryService.createWithItems(newInquiry, List.of(item1, item2));
+
+        assertThat(newInquiry.getStatus()).isEqualTo("new");
+        assertThat(newInquiry.getProductId()).isNull();
+        verify(mapper).insert(newInquiry);
+        verify(inquiryItemMapper, times(2)).insert(any(InquiryItem.class));
+    }
+
+    @Test
+    @DisplayName("createWithItems — 空 items 只创建主记录")
+    void createWithItems_emptyItems_createsInquiryOnly() {
+        Inquiry newInquiry = new Inquiry();
+        newInquiry.setName("John");
+        when(mapper.insert(any(Inquiry.class))).thenReturn(1);
+
+        Inquiry result = inquiryService.createWithItems(newInquiry, List.of());
+
+        verify(mapper).insert(newInquiry);
+        verify(inquiryItemMapper, never()).insert(any(InquiryItem.class));
+    }
+
+    @Test
+    @DisplayName("getItems — 返回询盘明细列表")
+    void getItems_returnsItemList() {
+        InquiryItem item = new InquiryItem();
+        item.setInquiryId(1L);
+        when(inquiryItemMapper.selectList(any(LambdaQueryWrapper.class))).thenReturn(List.of(item));
+
+        List<InquiryItem> items = inquiryService.getItems(1L);
+
+        assertThat(items).hasSize(1);
+        assertThat(items.get(0).getInquiryId()).isEqualTo(1L);
     }
 }
