@@ -68,7 +68,7 @@ public class PublicController {
      */
     @GetMapping("/config")
     public Result<Map<String, String>> config() {
-        return Result.ok(configService.getConfigMap());
+        return Result.ok(configService.getPublicConfigMap());
     }
 
     /**

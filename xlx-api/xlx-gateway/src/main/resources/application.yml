@@ -57,11 +57,11 @@ cors:
 # 文件上传配置
 # - path：文件存储目录（可通过环境变量覆盖）
 # - allowed-types：允许的文件扩展名
-# - max-size：单文件大小上限 50MB（字节）
+# - max-size：单文件大小上限 10MB（字节），需与 spring.servlet.multipart.max-file-size 一致
 upload:
   path: ${UPLOAD_PATH:./uploads}
   allowed-types: jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,txt,mp4,webm,mov
-  max-size: 52428800
+  max-size: 10485760
 
 # 日志配置 — 开发环境输出 debug 级别日志
 logging:

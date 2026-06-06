@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 站点配置服务。
@@ -36,6 +37,19 @@ public class SiteConfigService {
             map.put(config.getConfigKey(), config.getConfigValue());
         }
         return map;
+    }
+
+    /** 不对外暴露的敏感配置键 */
+    private static final Set<String> SENSITIVE_KEYS = Set.of(
+            "mail_password", "mail_username", "mail_host", "mail_port",
+            "mail_to", "mail_from_name", "mail_tls", "mail_enabled"
+    );
+
+    /** 获取前台安全配置（过滤敏感键） */
+    public Map<String, String> getPublicConfigMap() {
+        Map<String, String> all = getConfigMap();
+        all.keySet().removeAll(SENSITIVE_KEYS);
+        return all;
     }
 
     /** 更新单个配置项（不存在则创建） */

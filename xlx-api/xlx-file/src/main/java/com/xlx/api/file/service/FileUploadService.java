@@ -38,7 +38,8 @@ public class FileUploadService {
 
     /** 禁止上传的文件扩展名（安全防护） */
     private static final Set<String> BLOCKED_EXTENSIONS = Set.of(
-            "exe", "sh", "bat", "cmd", "js", "php", "jar", "py", "msi", "com", "vbs"
+            "exe", "sh", "bat", "cmd", "js", "php", "jar", "py", "msi", "com", "vbs",
+            "html", "htm", "svg", "jsp", "asp", "aspx"
     );
 
     public FileUploadService(FileUploadMapper mapper) {
@@ -57,7 +58,7 @@ public class FileUploadService {
             throw new BusinessException("文件不能为空");
         }
         if (file.getSize() > maxSize) {
-            throw new BusinessException("文件大小超过限制（最大 10MB）");
+            throw new BusinessException("文件大小超过限制（最大 " + (maxSize / 1024 / 1024) + "MB）");
         }
 
         String originalName = file.getOriginalFilename();
