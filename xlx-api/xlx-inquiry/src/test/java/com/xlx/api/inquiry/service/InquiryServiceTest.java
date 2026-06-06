@@ -52,7 +52,7 @@ class InquiryServiceTest {
         page.setTotal(1);
         when(mapper.selectPage(any(Page.class), any(LambdaQueryWrapper.class))).thenReturn(page);
 
-        PageResult<Inquiry> result = inquiryService.list(1, 10, null);
+        PageResult<Inquiry> result = inquiryService.list(1, 10, null, null, null, null);
 
         assertThat(result.getRecords()).hasSize(1);
         assertThat(result.getTotal()).isEqualTo(1);
@@ -67,8 +67,36 @@ class InquiryServiceTest {
         page.setTotal(1);
         when(mapper.selectPage(any(Page.class), any(LambdaQueryWrapper.class))).thenReturn(page);
 
-        inquiryService.list(1, 10, "new");
+        inquiryService.list(1, 10, "new", null, null, null);
 
+        verify(mapper).selectPage(any(Page.class), any(LambdaQueryWrapper.class));
+    }
+
+    @Test
+    @DisplayName("list — 按关键词搜索")
+    void list_withKeyword_searchesByNameAndCompany() {
+        Page<Inquiry> page = new Page<>(1, 10);
+        page.setRecords(List.of(sampleInquiry));
+        page.setTotal(1);
+        when(mapper.selectPage(any(Page.class), any(LambdaQueryWrapper.class))).thenReturn(page);
+
+        PageResult<Inquiry> result = inquiryService.list(1, 10, null, "张三", null, null);
+
+        assertThat(result.getRecords()).hasSize(1);
+        verify(mapper).selectPage(any(Page.class), any(LambdaQueryWrapper.class));
+    }
+
+    @Test
+    @DisplayName("list — 按日期范围筛选")
+    void list_withDateRange_filtersByCreatedAt() {
+        Page<Inquiry> page = new Page<>(1, 10);
+        page.setRecords(List.of(sampleInquiry));
+        page.setTotal(1);
+        when(mapper.selectPage(any(Page.class), any(LambdaQueryWrapper.class))).thenReturn(page);
+
+        PageResult<Inquiry> result = inquiryService.list(1, 10, null, null, "2026-06-01", "2026-06-05");
+
+        assertThat(result.getRecords()).hasSize(1);
         verify(mapper).selectPage(any(Page.class), any(LambdaQueryWrapper.class));
     }
 

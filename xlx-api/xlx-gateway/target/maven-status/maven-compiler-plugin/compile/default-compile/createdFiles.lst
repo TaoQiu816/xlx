@@ -1,3 +1,7 @@
+com/xlx/api/dto/DashboardStats$TrendItem.class
+com/xlx/api/controller/admin/DashboardController.class
+com/xlx/api/controller/publicc/PublicController.class
+com/xlx/api/dto/DashboardStats.class
+com/xlx/api/dto/DashboardStats$StatusItem.class
 com/xlx/api/config/WebMvcConfig.class
 com/xlx/api/XlxApiApplication.class
-com/xlx/api/controller/publicc/PublicController.class

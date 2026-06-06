@@ -1,7 +1,8 @@
 <template>
   <div>
     <el-button type="primary" class="mb-4" @click="openDialog()">上传证书</el-button>
-    <el-table :data="list" border v-loading="loading">
+    <el-table :data="list" border stripe v-loading="loading">
+      <template #empty><el-empty description="暂无证书" /></template>
       <el-table-column prop="imageUrl" label="图片" width="120">
         <template #default="{ row }">
           <el-image :src="row.imageUrl" style="width:80px;height:60px" fit="cover" />
@@ -50,6 +51,7 @@
         </el-form-item>
         <el-form-item label="颁发日期"><el-date-picker v-model="form.issueDate" value-format="YYYY-MM-DD" /></el-form-item>
         <el-form-item label="描述"><el-input v-model="form.descriptionCn" type="textarea" /></el-form-item>
+        <el-form-item label="英文描述"><el-input v-model="form.descriptionEn" type="textarea" /></el-form-item>
         <el-form-item label="排序"><el-input-number v-model="form.sortOrder" :min="0" /></el-form-item>
         <el-form-item label="显示"><el-switch v-model="form.status" :active-value="1" :inactive-value="0" /></el-form-item>
       </el-form>

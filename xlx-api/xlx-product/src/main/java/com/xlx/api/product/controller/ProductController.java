@@ -37,8 +37,9 @@ public class ProductController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) Long categoryId,
-            @RequestParam(required = false) Integer status) {
-        return Result.ok(productService.list(page, size, categoryId, status));
+            @RequestParam(required = false) Integer status,
+            @RequestParam(required = false) String keyword) {
+        return Result.ok(productService.list(page, size, categoryId, status, keyword));
     }
 
     /** 获取产品详情（含规格和图片） */

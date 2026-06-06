@@ -1,7 +1,9 @@
 package com.xlx.api.auth.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xlx.api.common.BusinessException;
+import com.xlx.api.common.PageResult;
 import com.xlx.api.auth.entity.AdminUser;
 import com.xlx.api.auth.mapper.AdminUserMapper;
 import com.xlx.api.util.JwtUtil;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -77,5 +80,87 @@ public class AuthService {
         }
         user.setPassword(null); // 不返回密码
         return user;
+    }
+
+    /**
+     * 分页查询管理员列表
+     */
+    public PageResult<AdminUser> listAdmins(int page, int size) {
+        Page<AdminUser> pageObj = adminUserMapper.selectPage(
+                new Page<>(page, size),
+                new LambdaQueryWrapper<AdminUser>().orderByDesc(AdminUser::getCreatedAt)
+        );
+        List<AdminUser> records = pageObj.getRecords();
+        records.forEach(u -> u.setPassword(null));
+        return new PageResult<>(records, pageObj.getTotal(), page, size);
+    }
+
+    /**
+     * 创建管理员
+     */
+    public AdminUser createAdmin(String username, String password, String nickname, String role) {
+        long count = adminUserMapper.selectCount(
+                new LambdaQueryWrapper<AdminUser>().eq(AdminUser::getUsername, username)
+        );
+        if (count > 0) {
+            throw new BusinessException("用户名已存在");
+        }
+        AdminUser user = new AdminUser();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setNickname(nickname != null ? nickname : username);
+        user.setRole(role != null ? role : "editor");
+        user.setStatus(1);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+        adminUserMapper.insert(user);
+        user.setPassword(null);
+        return user;
+    }
+
+    /**
+     * 更新管理员信息（不含密码）
+     */
+    public AdminUser updateAdmin(Long id, String nickname, String role, Integer status) {
+        AdminUser user = adminUserMapper.selectById(id);
+        if (user == null) {
+            throw new BusinessException("管理员不存在");
+        }
+        if (nickname != null) user.setNickname(nickname);
+        if (role != null) user.setRole(role);
+        if (status != null) user.setStatus(status);
+        user.setUpdatedAt(LocalDateTime.now());
+        adminUserMapper.updateById(user);
+        user.setPassword(null);
+        return user;
+    }
+
+    /**
+     * 修改管理员密码
+     */
+    public void changePassword(Long id, String newPassword) {
+        AdminUser user = adminUserMapper.selectById(id);
+        if (user == null) {
+            throw new BusinessException("管理员不存在");
+        }
+        AdminUser update = new AdminUser();
+        update.setId(id);
+        update.setPassword(passwordEncoder.encode(newPassword));
+        update.setUpdatedAt(LocalDateTime.now());
+        adminUserMapper.updateById(update);
+    }
+
+    /**
+     * 删除管理员
+     */
+    public void deleteAdmin(Long id) {
+        AdminUser user = adminUserMapper.selectById(id);
+        if (user == null) {
+            throw new BusinessException("管理员不存在");
+        }
+        if ("admin".equals(user.getUsername())) {
+            throw new BusinessException("不能删除默认管理员");
+        }
+        adminUserMapper.deleteById(id);
     }
 }

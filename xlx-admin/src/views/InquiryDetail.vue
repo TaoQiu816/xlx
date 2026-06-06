@@ -6,7 +6,7 @@
     </div>
 
     <el-card v-loading="loading">
-      <el-descriptions :column="2" border>
+      <el-descriptions :column="2" border class="inquiry-detail-desc">
         <el-descriptions-item label="客户姓名">{{ inquiry.name }}</el-descriptions-item>
         <el-descriptions-item label="公司名称">{{ inquiry.company || '-' }}</el-descriptions-item>
         <el-descriptions-item label="联系电话">{{ inquiry.phone || '-' }}</el-descriptions-item>
@@ -79,3 +79,15 @@ const handleRemarkSave = async () => {
 
 onMounted(loadDetail)
 </script>
+
+<style scoped>
+@media (max-width: 640px) {
+  .inquiry-detail-desc :deep(.el-descriptions__body) {
+    overflow-x: auto;
+  }
+
+  .inquiry-detail-desc :deep(.el-descriptions__table) {
+    min-width: 500px;
+  }
+}
+</style>

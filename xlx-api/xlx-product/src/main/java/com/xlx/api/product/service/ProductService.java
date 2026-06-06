@@ -34,14 +34,46 @@ public class ProductService {
         this.imageMapper = imageMapper;
     }
 
-    /** 分页查询产品列表（可按分类和状态筛选） */
-    public PageResult<Product> list(int page, int size, Long categoryId, Integer status) {
+    /** 分页查询产品列表（可按分类、状态筛选，按名称模糊搜索） */
+    public PageResult<Product> list(int page, int size, Long categoryId, Integer status, String keyword) {
         LambdaQueryWrapper<Product> wrapper = new LambdaQueryWrapper<>();
         if (categoryId != null) wrapper.eq(Product::getCategoryId, categoryId);
         if (status != null) wrapper.eq(Product::getStatus, status);
+        if (keyword != null && !keyword.isBlank()) {
+            wrapper.like(Product::getNameCn, keyword);
+        }
         wrapper.orderByAsc(Product::getSortOrder);
         Page<Product> p = productMapper.selectPage(new Page<>(page, size), wrapper);
         return new PageResult<>(p.getRecords(), p.getTotal(), page, size);
+    }
+
+    /** 分页查询前台产品列表（仅上架产品，支持搜索和排序） */
+    public PageResult<Product> listPublic(int page, int size, Long categoryId, String keyword, String sort) {
+        LambdaQueryWrapper<Product> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Product::getStatus, 1);
+        if (categoryId != null) wrapper.eq(Product::getCategoryId, categoryId);
+        if (keyword != null && !keyword.isBlank()) {
+            wrapper.like(Product::getNameCn, keyword);
+        }
+        if ("name_asc".equals(sort)) {
+            wrapper.orderByAsc(Product::getNameCn);
+        } else {
+            wrapper.orderByDesc(Product::getCreatedAt);
+        }
+        Page<Product> p = productMapper.selectPage(new Page<>(page, size), wrapper);
+        return new PageResult<>(p.getRecords(), p.getTotal(), page, size);
+    }
+
+    /** 查询同分类推荐产品（用于产品详情页相关推荐） */
+    public List<Product> listRelated(Long categoryId, Long excludeId, int limit) {
+        return productMapper.selectList(
+                new LambdaQueryWrapper<Product>()
+                        .eq(Product::getCategoryId, categoryId)
+                        .eq(Product::getStatus, 1)
+                        .ne(Product::getId, excludeId)
+                        .orderByAsc(Product::getSortOrder)
+                        .last("LIMIT " + limit)
+        );
     }
 
     /** 查询推荐产品（用于首页展示） */

@@ -1,7 +1,8 @@
 <template>
   <div>
     <el-button type="primary" class="mb-4" @click="openDialog()">新增分类</el-button>
-    <el-table :data="list" border v-loading="loading">
+    <el-table :data="list" border stripe v-loading="loading">
+      <template #empty><el-empty description="暂无分类" /></template>
       <el-table-column prop="nameCn" label="分类名称" />
       <el-table-column prop="nameEn" label="英文名称" />
       <el-table-column prop="slug" label="Slug" width="200" />

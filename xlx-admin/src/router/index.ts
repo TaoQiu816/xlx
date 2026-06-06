@@ -63,17 +63,56 @@ const router = createRouter({
           name: 'SiteConfig',
           component: () => import('../views/SiteConfig.vue'),
         },
+        {
+          path: 'admin-users',
+          name: 'AdminUsers',
+          component: () => import('../views/AdminUsers.vue'),
+        },
       ],
     },
   ],
 })
 
-// Navigation guard: redirect to login if no token
-router.beforeEach((to, _from, next) => {
+// Navigation guard: redirect to login if no token or token is invalid
+router.beforeEach(async (to, _from, next) => {
   const token = localStorage.getItem('admin_token')
-  if (to.name !== 'Login' && !token) {
+  if (to.name === 'Login') {
+    // 已登录时访问登录页，跳转到 dashboard
+    if (token) {
+      try {
+        const res = await fetch('/api/admin/auth/profile', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        if (res.ok) {
+          next({ name: 'Dashboard' })
+          return
+        }
+      } catch {}
+      // token 无效，清除后允许访问登录页
+      localStorage.removeItem('admin_token')
+    }
+    next()
+    return
+  }
+
+  if (!token) {
     next({ name: 'Login' })
-  } else {
+    return
+  }
+
+  // 验证 token 是否有效
+  try {
+    const res = await fetch('/api/admin/auth/profile', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    if (res.ok) {
+      next()
+    } else {
+      localStorage.removeItem('admin_token')
+      next({ name: 'Login' })
+    }
+  } catch {
+    // 网络错误时放行（可能是离线开发）
     next()
   }
 })

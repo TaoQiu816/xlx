@@ -24,12 +24,13 @@ spring:
       max-file-size: 10MB
       max-request-size: 20MB
 
-# Flyway 数据库迁移 — 启动时自动执行 db/migration/ 下的 SQL 脚本
-# - enabled: 启用迁移（首次启动自动建表）
-# - baseline-on-migrate: 对已有数据库建立基线（兼容手动建表的情况）
-flyway:
-  enabled: true
-  baseline-on-migrate: true
+  # Flyway 数据库迁移 — 启动时自动执行 db/migration/ 下的 SQL 脚本
+  # - enabled: 启用迁移（首次启动自动建表）
+  # - baseline-on-migrate: 对已有数据库建立基线（兼容手动建表的情况）
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    validate-on-migrate: false
 
 # MyBatis Plus ORM 配置
 # - 下划线转驼峰：user_name → userName
@@ -56,11 +57,11 @@ cors:
 # 文件上传配置
 # - path：文件存储目录（可通过环境变量覆盖）
 # - allowed-types：允许的文件扩展名
-# - max-size：单文件大小上限 10MB（字节）
+# - max-size：单文件大小上限 50MB（字节）
 upload:
   path: ${UPLOAD_PATH:./uploads}
-  allowed-types: jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,txt
-  max-size: 10485760
+  allowed-types: jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,txt,mp4,webm,mov
+  max-size: 52428800
 
 # 日志配置 — 开发环境输出 debug 级别日志
 logging:

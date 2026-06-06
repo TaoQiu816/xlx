@@ -8,6 +8,8 @@ import com.xlx.api.inquiry.entity.Inquiry;
 import com.xlx.api.inquiry.mapper.InquiryMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -29,11 +31,26 @@ public class InquiryService {
         this.mapper = mapper;
     }
 
-    /** 分页查询询盘（可按状态筛选） */
-    public PageResult<Inquiry> list(int page, int size, String status) {
+    /** 分页查询询盘（可按状态、关键词、日期范围筛选） */
+    public PageResult<Inquiry> list(int page, int size, String status, String keyword,
+                                     String startDate, String endDate) {
         LambdaQueryWrapper<Inquiry> wrapper = new LambdaQueryWrapper<>();
         if (status != null && !status.isEmpty()) {
             wrapper.eq(Inquiry::getStatus, status);
+        }
+        if (keyword != null && !keyword.isBlank()) {
+            wrapper.and(w -> w
+                    .like(Inquiry::getName, keyword)
+                    .or().like(Inquiry::getCompany, keyword)
+                    .or().like(Inquiry::getEmail, keyword)
+                    .or().like(Inquiry::getProductName, keyword)
+            );
+        }
+        if (startDate != null && !startDate.isEmpty()) {
+            wrapper.ge(Inquiry::getCreatedAt, LocalDate.parse(startDate).atStartOfDay());
+        }
+        if (endDate != null && !endDate.isEmpty()) {
+            wrapper.le(Inquiry::getCreatedAt, LocalDate.parse(endDate).plusDays(1).atStartOfDay());
         }
         wrapper.orderByDesc(Inquiry::getCreatedAt);
         Page<Inquiry> p = mapper.selectPage(new Page<>(page, size), wrapper);

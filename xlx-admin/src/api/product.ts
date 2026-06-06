@@ -1,7 +1,7 @@
 import request from './request'
 
 export const productApi = {
-  list: (params: { page: number; size: number; categoryId?: number; status?: number }) =>
+  list: (params: { page: number; size: number; categoryId?: number; status?: number; keyword?: string }) =>
     request.get('/products', { params }),
   detail: (id: number) => request.get(`/products/${id}`),
   create: (data: any) => request.post('/products', data),

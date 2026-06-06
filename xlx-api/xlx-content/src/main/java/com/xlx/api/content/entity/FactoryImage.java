@@ -20,6 +20,8 @@ public class FactoryImage {
     private String titleEn;
     /** 图片访问 URL */
     private String imageUrl;
+    /** 媒体类型：image / video */
+    private String mediaType;
     /** 图片描述（中文） */
     private String descriptionCn;
     /** 图片描述（英文） */
@@ -39,6 +41,8 @@ public class FactoryImage {
     public void setTitleEn(String titleEn) { this.titleEn = titleEn; }
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public String getMediaType() { return mediaType; }
+    public void setMediaType(String mediaType) { this.mediaType = mediaType; }
     public String getDescriptionCn() { return descriptionCn; }
     public void setDescriptionCn(String descriptionCn) { this.descriptionCn = descriptionCn; }
     public String getDescriptionEn() { return descriptionEn; }

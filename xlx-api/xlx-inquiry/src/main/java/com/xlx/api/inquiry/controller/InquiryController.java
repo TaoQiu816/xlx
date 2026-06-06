@@ -27,8 +27,11 @@ public class InquiryController {
     public Result<PageResult<Inquiry>> list(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
-            @RequestParam(required = false) String status) {
-        return Result.ok(service.list(page, size, status));
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+        return Result.ok(service.list(page, size, status, keyword, startDate, endDate));
     }
 
     /** 获取询盘详情 */

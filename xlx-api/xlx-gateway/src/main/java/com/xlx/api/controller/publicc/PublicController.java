@@ -79,14 +79,18 @@ public class PublicController {
      * @param page       页码
      * @param size       每页数量
      * @param categoryId 分类 ID（可选）
+     * @param keyword    搜索关键词（可选，按名称模糊匹配）
+     * @param sort       排序方式（可选：latest/name_asc）
      * @return 分页产品列表
      */
     @GetMapping("/products")
     public Result<PageResult<Product>> products(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
-            @RequestParam(required = false) Long categoryId) {
-        return Result.ok(productService.list(page, size, categoryId, 1));
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String sort) {
+        return Result.ok(productService.listPublic(page, size, categoryId, keyword, sort));
     }
 
     /**
@@ -110,7 +114,11 @@ public class PublicController {
     @GetMapping("/products/{slug}")
     public Result<Map<String, Object>> productDetail(@PathVariable String slug) {
         Product product = productService.getBySlug(slug);
-        return Result.ok(productService.getDetailById(product.getId()));
+        Map<String, Object> detail = productService.getDetailById(product.getId());
+        // 附加同分类推荐产品
+        detail.put("relatedProducts", productService.listRelated(
+                product.getCategoryId(), product.getId(), 4));
+        return Result.ok(detail);
     }
 
     /**
