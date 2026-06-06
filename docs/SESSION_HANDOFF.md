@@ -28,7 +28,7 @@
 | V1.2 | 界面美化（登录页重写、Dashboard 图表、产品卡片动画等） | ✅ |
 | V1.3 | SEO 优化（useHead、JSON-LD、robots.txt、sitemap.xml） | ✅ |
 | V2.1 | 中英文切换（vue-i18n、langField、语言切换器、SiteConfig 英文字段） | ✅ |
-| V2.2 | 询价车 + 多产品询盘 + 收口优化 | ✅ |
+| V2.2 | 询价车 + 多产品询盘 + 收口优化 | ✅ 已关闭 |
 
 ## 4. Flyway 迁移版本
 
