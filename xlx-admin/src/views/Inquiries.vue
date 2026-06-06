@@ -221,7 +221,8 @@ const handleExport = async () => {
     const url = window.URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = '询盘列表.xlsx'
+    const today = new Date().toISOString().slice(0, 10).replace(/-/g, '')
+    a.download = `询盘列表_${today}.xlsx`
     a.click()
     window.URL.revokeObjectURL(url)
     ElMessage.success('导出成功')

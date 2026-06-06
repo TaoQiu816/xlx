@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +46,9 @@ public class InquiryController {
                 .toList();
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        String filename = "询盘列表_" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + ".xlsx";
         response.setHeader("Content-Disposition",
-                "attachment;filename=" + URLEncoder.encode("询盘列表.xlsx", StandardCharsets.UTF_8));
+                "attachment;filename=" + URLEncoder.encode(filename, StandardCharsets.UTF_8));
 
         EasyExcel.write(response.getOutputStream(), InquiryExcelDTO.class)
                 .sheet("询盘列表")
