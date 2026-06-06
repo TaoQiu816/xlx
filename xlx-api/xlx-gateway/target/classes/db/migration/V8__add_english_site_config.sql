@@ -1,0 +1,35 @@
+-- V8: 添加英文站点配置
+-- 为 site_config 表添加英文版本的配置项，用于前台英文展示
+
+INSERT INTO site_config (config_key, config_value, remark) VALUES
+('site_name_en', 'Xinlianxin Wire Mesh', '网站英文名称'),
+('company_name_en', 'Anping Xinlianxin Wire Mesh Factory', '公司英文名称'),
+('banner_title_en', 'Professional Wire Mesh Manufacturer', '首页Banner英文标题'),
+('banner_subtitle_en', '20 years of experience providing high-quality metal wire and mesh products', '首页Banner英文副标题'),
+('phone_en', '', '英文联系电话'),
+('email_en', '', '英文邮箱'),
+('address_en', 'Anping County, Hengshui City, Hebei Province, China', '英文地址'),
+('hero_stat1_value_en', '20+', '首页统计英文数字1'),
+('hero_stat1_label_en', 'Years Experience', '首页统计英文标签1'),
+('hero_stat2_value_en', '50+', '首页统计英文数字2'),
+('hero_stat2_label_en', 'Product Lines', '首页统计英文标签2'),
+('hero_stat3_value_en', '1000+', '首页统计英文数字3'),
+('hero_stat3_label_en', 'Global Clients', '首页统计英文标签3'),
+('hero_stat4_value_en', '99.8%', '首页统计英文数字4'),
+('hero_stat4_label_en', 'Quality Rate', '首页统计英文标签4'),
+('sp1_num_en', '5000', '卖点1英文数字'),
+('sp1_title_en', 'Monthly Capacity', '卖点1英文标题'),
+('sp1_desc_en', 'Tons of wire mesh products', '卖点1英文描述'),
+('sp2_num_en', '20+', '卖点2英文数字'),
+('sp2_title_en', 'Export Countries', '卖点2英文标题'),
+('sp2_desc_en', 'Global market coverage', '卖点2英文描述'),
+('sp3_num_en', '100%', '卖点3英文数字'),
+('sp3_title_en', 'Quality Assurance', '卖点3英文标题'),
+('sp3_desc_en', 'ISO 9001 certified production', '卖点3英文描述'),
+('sp4_num_en', '24h', '卖点4英文数字'),
+('sp4_title_en', 'Response Time', '卖点4英文标题'),
+('sp4_desc_en', 'Fast quote and technical support', '卖点4英文描述'),
+('seo_title_en', 'Xinlianxin Wire Mesh - Professional Wire Mesh Manufacturer', 'SEO英文标题'),
+('seo_description_en', 'Professional manufacturer of stainless steel wire, titanium wire, Monel wire, copper wire and mesh products.', 'SEO英文描述'),
+('seo_keywords_en', 'wire mesh, stainless steel wire, galvanized wire, welded wire mesh, chain link fence, window screen', 'SEO英文关键词')
+ON DUPLICATE KEY UPDATE config_value = VALUES(config_value);
