@@ -32,5 +32,5 @@ export interface DashboardStats {
 
 export const dashboardApi = {
   stats: (trendDays = 7) =>
-    request.get('/admin/dashboard/stats', { params: { trendDays } }),
+    request.get('/dashboard/stats', { params: { trendDays } }),
 }

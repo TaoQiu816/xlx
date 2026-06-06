@@ -31,25 +31,6 @@ useBreadcrumbSchema([
   { name: '首页', url: '/' },
 ])
 
-useOrganizationSchema({
-  address: {
-    '@type': 'PostalAddress',
-    addressCountry: 'CN',
-    addressRegion: '河北省',
-    addressLocality: '衡水市安平县',
-    streetAddress: '安平县丝网工业园区',
-  },
-  contactPoint: {
-    '@type': 'ContactPoint',
-    telephone: '+86-316-8888888',
-    contactType: 'sales',
-  },
-})
-
-useBreadcrumbSchema([
-  { name: '首页', url: '/' },
-])
-
 const props = defineProps<{
   config?: Record<string, string>
 }>()

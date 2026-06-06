@@ -1,6 +1,7 @@
+# 待域名确认后替换下方 YOUR_DOMAIN 为实际域名
 User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-Sitemap: https://www.xlx-siwang.com/sitemap.xml
+Sitemap: https://YOUR_DOMAIN/sitemap.xml

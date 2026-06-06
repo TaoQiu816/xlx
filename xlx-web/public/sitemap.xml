@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 待域名确认后替换下方 YOUR_DOMAIN 为实际域名 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.xlx-siwang.com/</loc>
+    <loc>https://YOUR_DOMAIN/</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.xlx-siwang.com/about</loc>
+    <loc>https://YOUR_DOMAIN/about</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.xlx-siwang.com/products</loc>
+    <loc>https://YOUR_DOMAIN/products</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.xlx-siwang.com/factory</loc>
+    <loc>https://YOUR_DOMAIN/factory</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.xlx-siwang.com/certificates</loc>
+    <loc>https://YOUR_DOMAIN/certificates</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.xlx-siwang.com/faq</loc>
+    <loc>https://YOUR_DOMAIN/faq</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.xlx-siwang.com/contact</loc>
+    <loc>https://YOUR_DOMAIN/contact</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

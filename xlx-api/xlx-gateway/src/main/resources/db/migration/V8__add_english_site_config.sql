@@ -1,7 +1,7 @@
 -- V8: 添加英文站点配置
 -- 为 site_config 表添加英文版本的配置项，用于前台英文展示
 
-INSERT INTO site_config (config_key, config_value, remark) VALUES
+INSERT INTO site_config (config_key, config_value, description) VALUES
 ('site_name_en', 'Xinlianxin Wire Mesh', '网站英文名称'),
 ('company_name_en', 'Anping Xinlianxin Wire Mesh Factory', '公司英文名称'),
 ('banner_title_en', 'Professional Wire Mesh Manufacturer', '首页Banner英文标题'),

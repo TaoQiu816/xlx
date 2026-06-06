@@ -2,7 +2,7 @@
 
 ## 项目定位
 
-鑫连鑫丝网厂 — B2B 丝网工厂官网与销售系统。V1 实现中文前台展示、中文后台管理、产品管理、规格管理、图片管理、证书管理、询盘管理和文件上传。
+鑫连鑫丝网厂 B2B 官网与询盘管理系统。核心能力包括中英文产品展示、后台内容维护、单产品询盘、多产品询价车、文件上传、邮件通知和询盘导出。不是 AI 系统、电商平台、ERP、CRM 或自动报价系统。
 
 ## 技术栈
 
@@ -30,14 +30,25 @@
 | V2.1 | 中英文切换（vue-i18n、langField、语言切换器、SiteConfig 英文字段） |
 | V2.2 | 询价车 + 多产品询盘 + 收口优化 |
 | V2.3 | 询盘通知 + Excel 导出 + 一键复制 + 后台效率增强 |
+| V2.4 | 上线前安全修复 + 内容录入准备 + 功能盘点 + 预期评估 |
+| V2.5 | 开发收口 + About 页面迁移 + SQL 日志可配置 + SEO 占位域名 |
+| V2.6 | 本地试运行与后台操作验证 |
+| V2.6.1 | 前台 API 缓存优化（sessionStorage + 请求去重） |
 
-## 待实现功能
+## 不需要的功能（不纳入近期规划）
 
-- 在线支付（支付宝、微信支付、PayPal、信用卡）
-- 客户注册 / 客户中心
-- 多角色权限
-- 自动报价
-- AI 客服 / ERP 对接
+- AI 客服 / AI 推荐 / AI 自动文案 / AI 自动报价 — 丝网产品报价需人工确认，AI 不能直接提升核心业务闭环
+- Elasticsearch — 产品量不大，MySQL LIKE 够用
+- 消息队列 — 询盘量不大，@Async 已够用
+- 复杂 CRM / 大数据分析 — 当前数据量和客户量不足
+- 微服务 / GraphQL — 单体应用足够
+
+## 暂不接入的功能（未来可按需接入）
+
+- Redis 缓存 — 当前访问量不大，MySQL 足够
+- OSS/COS 对象存储 — 当前本地 uploads 足够
+- CDN / Docker / Nginx / CI/CD — 属于部署阶段，服务器确认后
+- 客户注册 / 客户中心 / 订单系统 / 支付系统 / 报价单系统 — 属于后续销售流程增强
 
 ## 开发规则
 
@@ -53,7 +64,7 @@
 
 ## Flyway 迁移规则（关键）
 
-**已执行的迁移文件（V1-V10）永远不要修改。** 修改已执行的迁移文件会导致校验和不匹配，后端无法启动。
+**已执行的迁移文件（V1-V11）永远不要修改。** 修改已执行的迁移文件会导致校验和不匹配，后端无法启动。
 
 需要改表结构时，必须创建新的迁移文件：
 
@@ -63,13 +74,14 @@ db/migration/
 ├── V2__seed_data.sql          ← 已执行，不动
 ├── V3__add_selling_points_config.sql ← 已执行，不动
 ├── V4__add_faq_config.sql     ← 已执行，不动
-├── V5__add_admin_user_fields.sql ← 已执行，不动
-├── V6__add_inquiry_fields.sql ← 已执行，不动
-├── V7__add_seo_config.sql     ← 已执行，不动
+├── V5__add_faq_page_groups_config.sql ← 已执行，不动
+├── V6__add_media_type_to_factory_image.sql ← 已执行，不动
+├── V7__add_seo_config_fields.sql ← 已执行，不动
 ├── V8__add_english_site_config.sql ← 已执行，不动
 ├── V9__add_inquiry_item.sql   ← 已执行，不动
 ├── V10__add_mail_config.sql   ← 已执行，不动
-└── V11__xxx.sql               ← 新增变更用新文件
+├── V11__add_about_page_config.sql ← 已执行，不动
+└── V12__xxx.sql               ← 新增变更用新文件
 ```
 
 文件名格式：`V{版本号}__{描述}.sql`，版本号递增，不可跳跃或重复。

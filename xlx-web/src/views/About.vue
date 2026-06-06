@@ -1,12 +1,37 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSEO } from '../composables/useSEO'
+import { siteApi } from '../api/site'
+import { getLocale } from '../i18n'
 
 const { t } = useI18n()
 
 useSEO({
   title: t('about.title'),
   description: t('about.subtitle'),
+})
+
+const config = ref<Record<string, string>>({})
+
+function cfgVal(key: string): string {
+  const locale = getLocale()
+  if (locale === 'en') {
+    const enVal = config.value[`${key}_en`]
+    if (enVal) return enVal
+  }
+  return config.value[key] || ''
+}
+
+onMounted(async () => {
+  try {
+    const res: any = await siteApi.config()
+    const map: Record<string, string> = {}
+    for (const item of (res.data || [])) {
+      map[item.configKey] = item.configValue || ''
+    }
+    config.value = map
+  } catch { /* ignore */ }
 })
 </script>
 
@@ -27,14 +52,8 @@ useSEO({
           <div>
             <h2 class="text-2xl font-bold text-steel-900 mb-6">{{ t('about.title') }}</h2>
             <div class="space-y-4 text-steel-600 leading-relaxed">
-              <p>
-                鑫连鑫丝网厂位于中国丝网之都——江苏省南通市，是一家专业生产金属丝和丝网产品的企业。公司拥有多年的生产经验，技术力量雄厚，检测设备齐全。
-              </p>
-              <p>
-                我们主要产品涵盖金属丝类（镀锌铁丝、不锈钢丝、退火丝、PVC涂塑丝等）和丝网类（电焊网片、荷兰网、护栏网、窗纱、钢板网、钢格板等），广泛应用于建筑、农业、工业、交通等领域。
-              </p>
-              <p>
-                公司始终坚持"质量第一、客户至上"的经营理念，产品远销东南亚、中东、非洲、欧洲等多个国家和地区，赢得了国内外客户的信赖与好评。
+              <p v-for="(para, idx) in cfgVal('about_intro').split('\n').filter(Boolean)" :key="idx">
+                {{ para }}
               </p>
             </div>
           </div>
@@ -50,19 +69,19 @@ useSEO({
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
-            <div class="text-4xl font-bold text-primary-600 mb-2">10+</div>
+            <div class="text-4xl font-bold text-primary-600 mb-2">{{ cfgVal('about_years') || '10+' }}</div>
             <div class="text-steel-600">{{ t('about.yearsExp') }}</div>
           </div>
           <div>
-            <div class="text-4xl font-bold text-primary-600 mb-2">50+</div>
+            <div class="text-4xl font-bold text-primary-600 mb-2">{{ cfgVal('about_products') || '50+' }}</div>
             <div class="text-steel-600">{{ t('about.productTypes') }}</div>
           </div>
           <div>
-            <div class="text-4xl font-bold text-primary-600 mb-2">30+</div>
+            <div class="text-4xl font-bold text-primary-600 mb-2">{{ cfgVal('about_countries') || '30+' }}</div>
             <div class="text-steel-600">{{ t('about.exportCountries') }}</div>
           </div>
           <div>
-            <div class="text-4xl font-bold text-primary-600 mb-2">1000+</div>
+            <div class="text-4xl font-bold text-primary-600 mb-2">{{ cfgVal('about_clients') || '1000+' }}</div>
             <div class="text-steel-600">{{ t('about.servedClients') }}</div>
           </div>
         </div>

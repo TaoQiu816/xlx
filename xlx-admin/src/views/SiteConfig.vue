@@ -265,6 +265,59 @@
           <el-switch v-model="configs.mail_tls" active-value="true" inactive-value="false" />
         </el-form-item>
 
+        <!-- 关于我们页面配置 -->
+        <el-divider content-position="left">关于我们页面</el-divider>
+        <el-form-item label="公司介绍">
+          <el-input v-model="configs.about_intro" type="textarea" :rows="4" placeholder="公司简介（中文）" />
+        </el-form-item>
+        <el-form-item label="公司介绍(EN)">
+          <el-input v-model="configs.about_intro_en" type="textarea" :rows="4" placeholder="Company introduction (English)" />
+        </el-form-item>
+        <el-row :gutter="16">
+          <el-col :xs="12" :sm="6">
+            <el-form-item label="年经验">
+              <el-input v-model="configs.about_years" placeholder="如 10+" />
+            </el-form-item>
+          </el-col>
+          <el-col :xs="12" :sm="6">
+            <el-form-item label="年经验(EN)">
+              <el-input v-model="configs.about_years_en" placeholder="e.g. 10+" />
+            </el-form-item>
+          </el-col>
+          <el-col :xs="12" :sm="6">
+            <el-form-item label="产品种类">
+              <el-input v-model="configs.about_products" placeholder="如 50+" />
+            </el-form-item>
+          </el-col>
+          <el-col :xs="12" :sm="6">
+            <el-form-item label="产品种类(EN)">
+              <el-input v-model="configs.about_products_en" placeholder="e.g. 50+" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="16">
+          <el-col :xs="12" :sm="6">
+            <el-form-item label="出口国家">
+              <el-input v-model="configs.about_countries" placeholder="如 30+" />
+            </el-form-item>
+          </el-col>
+          <el-col :xs="12" :sm="6">
+            <el-form-item label="出口国家(EN)">
+              <el-input v-model="configs.about_countries_en" placeholder="e.g. 30+" />
+            </el-form-item>
+          </el-col>
+          <el-col :xs="12" :sm="6">
+            <el-form-item label="服务客户">
+              <el-input v-model="configs.about_clients" placeholder="如 1000+" />
+            </el-form-item>
+          </el-col>
+          <el-col :xs="12" :sm="6">
+            <el-form-item label="服务客户(EN)">
+              <el-input v-model="configs.about_clients_en" placeholder="e.g. 1000+" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
         <el-form-item>
           <el-button type="primary" size="large" :loading="saving" @click="handleSave">保存配置</el-button>
         </el-form-item>
