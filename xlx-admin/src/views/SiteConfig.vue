@@ -220,6 +220,51 @@
           <el-input v-model="configs.seo_og_image" placeholder="如 /logo.png 或完整URL" />
         </el-form-item>
 
+        <!-- 邮件通知配置 -->
+        <el-divider content-position="left">邮件通知配置</el-divider>
+        <el-form-item label="启用邮件通知">
+          <el-switch v-model="configs.mail_enabled" active-value="true" inactive-value="false" />
+        </el-form-item>
+        <el-row :gutter="16">
+          <el-col :xs="24" :sm="12">
+            <el-form-item label="SMTP 服务器">
+              <el-input v-model="configs.mail_host" placeholder="如 smtp.qq.com" />
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12">
+            <el-form-item label="SMTP 端口">
+              <el-input v-model="configs.mail_port" placeholder="默认 587" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="16">
+          <el-col :xs="24" :sm="12">
+            <el-form-item label="发件人邮箱">
+              <el-input v-model="configs.mail_username" placeholder="如 your@qq.com" />
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12">
+            <el-form-item label="邮箱密码/授权码">
+              <el-input v-model="configs.mail_password" type="password" show-password />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="16">
+          <el-col :xs="24" :sm="12">
+            <el-form-item label="发件人显示名称">
+              <el-input v-model="configs.mail_from_name" placeholder="如 鑫连鑫丝网" />
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12">
+            <el-form-item label="收件人邮箱">
+              <el-input v-model="configs.mail_to" placeholder="管理员邮箱" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="启用 TLS">
+          <el-switch v-model="configs.mail_tls" active-value="true" inactive-value="false" />
+        </el-form-item>
+
         <el-form-item>
           <el-button type="primary" size="large" :loading="saving" @click="handleSave">保存配置</el-button>
         </el-form-item>

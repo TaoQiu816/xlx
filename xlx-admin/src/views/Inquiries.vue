@@ -2,6 +2,9 @@
   <div>
     <!-- 筛选栏 -->
     <div class="flex gap-2 mb-4 flex-wrap items-center">
+      <el-button type="success" plain @click="handleExport" :loading="exporting">
+        <el-icon class="mr-1"><Download /></el-icon>导出 Excel
+      </el-button>
       <el-input
         v-model="keyword"
         placeholder="搜索客户/公司/邮箱/产品"
@@ -140,6 +143,7 @@ const total = ref(0)
 const keyword = ref('')
 const filterStatus = ref('')
 const dateRange = ref<[string, string] | null>(null)
+const exporting = ref(false)
 
 const formatDate = (d: string) => d ? new Date(d).toLocaleString('zh-CN') : '-'
 
@@ -201,6 +205,30 @@ const handleDelete = async (id: number) => {
     loadList()
   } catch {
     ElMessage.error('删除失败')
+  }
+}
+
+const handleExport = async () => {
+  exporting.value = true
+  try {
+    const res = await inquiryApi.export({
+      status: filterStatus.value || undefined,
+      keyword: keyword.value || undefined,
+      startDate: dateRange.value?.[0] || undefined,
+      endDate: dateRange.value?.[1] || undefined,
+    })
+    const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = '询盘列表.xlsx'
+    a.click()
+    window.URL.revokeObjectURL(url)
+    ElMessage.success('导出成功')
+  } catch {
+    ElMessage.error('导出失败')
+  } finally {
+    exporting.value = false
   }
 }
 

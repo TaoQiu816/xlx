@@ -33,6 +33,9 @@ class InquiryServiceTest {
     @Mock
     private InquiryItemMapper inquiryItemMapper;
 
+    @Mock
+    private InquiryNotifier notificationService;
+
     private InquiryService inquiryService;
 
     private InquiryItemService inquiryItemService;
@@ -42,7 +45,7 @@ class InquiryServiceTest {
     @BeforeEach
     void setUp() {
         inquiryItemService = new InquiryItemService(inquiryItemMapper);
-        inquiryService = new InquiryService(mapper, inquiryItemService);
+        inquiryService = new InquiryService(mapper, inquiryItemService, notificationService);
         sampleInquiry = new Inquiry();
         sampleInquiry.setId(1L);
         sampleInquiry.setName("张三");

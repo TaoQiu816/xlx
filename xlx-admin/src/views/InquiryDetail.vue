@@ -2,7 +2,12 @@
   <div>
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-xl font-bold">询盘详情</h2>
-      <el-button @click="$router.back()">返回</el-button>
+      <div class="flex gap-2">
+        <el-button type="success" plain @click="copyContact">
+          <el-icon class="mr-1"><CopyDocument /></el-icon>复制联系方式
+        </el-button>
+        <el-button @click="$router.back()">返回</el-button>
+      </div>
     </div>
 
     <el-card v-loading="loading">
@@ -73,6 +78,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { CopyDocument } from '@element-plus/icons-vue'
 import { inquiryApi } from '../api/inquiry'
 
 interface InquiryItem {
@@ -117,6 +123,34 @@ const handleStatusChange = async (status: string) => {
 const handleRemarkSave = async () => {
   await inquiryApi.updateRemark(Number(route.params.id), remark.value)
   ElMessage.success('备注已保存')
+}
+
+const copyContact = async () => {
+  const q = inquiry.value
+  const lines = [
+    `客户: ${q.name || '-'}`,
+    `公司: ${q.company || '-'}`,
+    `电话: ${q.phone || '-'}`,
+    `邮箱: ${q.email || '-'}`,
+    `微信: ${q.wechat || '-'}`,
+    `WhatsApp: ${q.whatsapp || '-'}`,
+    `国家: ${q.country || '-'}`,
+  ]
+  const text = lines.join('\n')
+  try {
+    await navigator.clipboard.writeText(text)
+    ElMessage.success('联系方式已复制')
+  } catch {
+    const textarea = document.createElement('textarea')
+    textarea.value = text
+    textarea.style.position = 'fixed'
+    textarea.style.opacity = '0'
+    document.body.appendChild(textarea)
+    textarea.select()
+    document.execCommand('copy')
+    document.body.removeChild(textarea)
+    ElMessage.success('联系方式已复制')
+  }
 }
 
 onMounted(loadDetail)

@@ -1,12 +1,17 @@
 package com.xlx.api.inquiry.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.xlx.api.common.PageResult;
 import com.xlx.api.common.Result;
+import com.xlx.api.inquiry.dto.InquiryExcelDTO;
 import com.xlx.api.inquiry.entity.Inquiry;
 import com.xlx.api.inquiry.entity.InquiryItem;
 import com.xlx.api.inquiry.service.InquiryService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +28,28 @@ public class InquiryController {
 
     public InquiryController(InquiryService service) {
         this.service = service;
+    }
+
+    /** 导出询盘为 Excel */
+    @GetMapping("/export")
+    public void export(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            HttpServletResponse response) throws Exception {
+        List<Inquiry> inquiries = service.listAll(status, keyword, startDate, endDate);
+        List<InquiryExcelDTO> dtos = inquiries.stream()
+                .map(InquiryExcelDTO::from)
+                .toList();
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition",
+                "attachment;filename=" + URLEncoder.encode("询盘列表.xlsx", StandardCharsets.UTF_8));
+
+        EasyExcel.write(response.getOutputStream(), InquiryExcelDTO.class)
+                .sheet("询盘列表")
+                .doWrite(dtos);
     }
 
     /** 分页查询询盘列表 */

@@ -10,8 +10,9 @@ import com.xlx.api.inquiry.mapper.InquiryMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.xlx.api.inquiry.dto.InquiryExcelDTO;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -30,10 +31,13 @@ public class InquiryService {
 
     private final InquiryMapper mapper;
     private final InquiryItemService inquiryItemService;
+    private final InquiryNotifier notificationService;
 
-    public InquiryService(InquiryMapper mapper, InquiryItemService inquiryItemService) {
+    public InquiryService(InquiryMapper mapper, InquiryItemService inquiryItemService,
+                          InquiryNotifier notificationService) {
         this.mapper = mapper;
         this.inquiryItemService = inquiryItemService;
+        this.notificationService = notificationService;
     }
 
     /** 分页查询询盘（可按状态、关键词、日期范围筛选） */
@@ -74,6 +78,7 @@ public class InquiryService {
     public void create(Inquiry inquiry) {
         inquiry.setStatus("new");
         mapper.insert(inquiry);
+        notificationService.sendInquiryNotification(inquiry);
     }
 
     /** 创建多产品询盘（带 items 明细） */
@@ -88,6 +93,7 @@ public class InquiryService {
         if (items != null && !items.isEmpty()) {
             inquiryItemService.createBatch(inquiry.getId(), items);
         }
+        notificationService.sendInquiryNotification(inquiry);
         return inquiry;
     }
 
@@ -116,5 +122,29 @@ public class InquiryService {
     /** 删除询盘 */
     public void delete(Long id) {
         mapper.deleteById(id);
+    }
+
+    /** 导出用：查询所有询盘（复用 list 的筛选逻辑） */
+    public List<Inquiry> listAll(String status, String keyword, String startDate, String endDate) {
+        LambdaQueryWrapper<Inquiry> wrapper = new LambdaQueryWrapper<>();
+        if (status != null && !status.isEmpty()) {
+            wrapper.eq(Inquiry::getStatus, status);
+        }
+        if (keyword != null && !keyword.isBlank()) {
+            wrapper.and(w -> w
+                    .like(Inquiry::getName, keyword)
+                    .or().like(Inquiry::getCompany, keyword)
+                    .or().like(Inquiry::getEmail, keyword)
+                    .or().like(Inquiry::getProductName, keyword)
+            );
+        }
+        if (startDate != null && !startDate.isEmpty()) {
+            wrapper.ge(Inquiry::getCreatedAt, LocalDate.parse(startDate).atStartOfDay());
+        }
+        if (endDate != null && !endDate.isEmpty()) {
+            wrapper.le(Inquiry::getCreatedAt, LocalDate.parse(endDate).plusDays(1).atStartOfDay());
+        }
+        wrapper.orderByDesc(Inquiry::getCreatedAt);
+        return mapper.selectList(wrapper);
     }
 }

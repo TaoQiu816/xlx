@@ -1,7 +1,10 @@
 com/xlx/api/inquiry/mapper/InquiryMapper.class
 com/xlx/api/inquiry/entity/InquiryItem.class
 com/xlx/api/inquiry/service/InquiryItemService.class
+com/xlx/api/inquiry/service/InquiryNotificationService.class
 com/xlx/api/inquiry/service/InquiryService.class
 com/xlx/api/inquiry/entity/Inquiry.class
+com/xlx/api/inquiry/service/InquiryNotifier.class
 com/xlx/api/inquiry/mapper/InquiryItemMapper.class
+com/xlx/api/inquiry/dto/InquiryExcelDTO.class
 com/xlx/api/inquiry/controller/InquiryController.class
